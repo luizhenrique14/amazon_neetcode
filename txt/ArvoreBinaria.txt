@@ -1,0 +1,203 @@
+// Estruturas de Dados - Árvores Binárias e Binária de Busca em Node.js
+
+// Classe que representa um nó da árvore binária
+class No {
+    constructor(valor) {
+        this.valor = valor; // Valor armazenado no nó
+        this.esquerda = null; // Referência para o filho à esquerda
+        this.direita = null; // Referência para o filho à direita
+    }
+
+    // Retorna o valor do nó como string
+    toString() {
+        return String(this.valor);
+    }
+}
+
+// Classe que representa uma árvore binária genérica
+class ArvoreBinaria {
+    constructor(valor = null, no = null) {
+        // Se um nó for passado, inicializa a árvore com ele
+        if (no) {
+            this.raiz = no; // Raiz da árvore é o nó passado
+        // Se um valor for passado, cria um nó raiz com esse valor
+        } else if (valor !== null) {
+            this.raiz = new No(valor); // Cria nó raiz
+        // Se nada for passado, inicializa árvore vazia
+        } else {
+            this.raiz = null; // Árvore sem nós
+        }
+    }
+
+    // Percurso simétrico (inorder) com parênteses para visualização
+    // Visita o filho esquerdo, depois o nó atual, depois o filho direito
+    percursoSimetrico(no = null) {
+        if (no === null) no = this.raiz; // Começa pela raiz se não passar nó
+        if (no.esquerda) { // Se tem filho à esquerda, percorre ele primeiro
+            process.stdout.write('('); // Adiciona parêntese para visualização
+            this.percursoSimetrico(no.esquerda); // Chama recursivamente para o filho esquerdo
+        }
+        process.stdout.write(no.toString()); // Exibe o valor do nó atual
+        if (no.direita) { // Se tem filho à direita, percorre ele depois
+            this.percursoSimetrico(no.direita); // Chama recursivamente para o filho direito
+            process.stdout.write(')'); // Fecha parêntese
+        }
+    }
+
+    // Percurso pós-ordem (postorder)
+    // Visita os filhos (esquerdo e direito) antes do nó atual
+    percursoPosOrdem(no = null) {
+        if (no === null) no = this.raiz; // Começa pela raiz
+        if (no.esquerda) this.percursoPosOrdem(no.esquerda); // Percorre filho esquerdo
+        if (no.direita) this.percursoPosOrdem(no.direita); // Percorre filho direito
+        console.log(no.toString()); // Exibe o valor do nó atual
+    }
+
+    // Calcula a altura da árvore
+    // Altura é o maior caminho da raiz até uma folha
+    altura(no = null) {
+        if (no === null) no = this.raiz; // Começa pela raiz
+        let alturaEsquerda = 0, alturaDireita = 0; // Altura dos filhos
+        if (no.esquerda) alturaEsquerda = this.altura(no.esquerda); // Calcula altura do filho esquerdo
+        if (no.direita) alturaDireita = this.altura(no.direita); // Calcula altura do filho direito
+        return Math.max(alturaEsquerda, alturaDireita) + 1; // Retorna a maior altura + 1 (do nó atual)
+    }
+
+    // Percurso em ordem (inorder)
+    // Visita o filho esquerdo, nó atual, filho direito
+    percursoEmOrdem(no = null) {
+        if (no === null) no = this.raiz; // Começa pela raiz
+        if (no.esquerda) this.percursoEmOrdem(no.esquerda); // Percorre filho esquerdo
+        process.stdout.write(no.toString() + ' '); // Exibe valor do nó
+        if (no.direita) this.percursoEmOrdem(no.direita); // Percorre filho direito
+    }
+
+    // Percurso por nível (level order)
+    // Visita os nós nível por nível usando uma fila
+    percursoPorNivel(no = null) {
+        if (no === null) no = this.raiz; // Começa pela raiz
+        let fila = []; // Cria uma fila
+        fila.push(no); // Adiciona nó inicial na fila
+        while (fila.length > 0) { // Enquanto houver nós na fila
+            let atual = fila.shift(); // Remove o primeiro nó da fila
+            if (atual.esquerda) fila.push(atual.esquerda); // Adiciona filho esquerdo na fila
+            if (atual.direita) fila.push(atual.direita); // Adiciona filho direito na fila
+            process.stdout.write(atual.toString() + ' '); // Exibe valor do nó
+        }
+    }
+}
+
+// Classe que representa uma árvore binária de busca (BST)
+class ArvoreBinariaBusca extends ArvoreBinaria {
+    /**
+     * Insere um novo valor na árvore binária de busca (BST).
+     * 
+     * Lógica:
+     * - Começa pela raiz e percorre a árvore comparando o valor a ser inserido com o valor dos nós.
+     * - Se o valor for menor, vai para o filho à esquerda; se for maior ou igual, vai para o filho à direita.
+     * - Repete esse processo até encontrar um nó folha (onde não há mais filhos na direção desejada).
+     * - Cria um novo nó e o conecta como filho esquerdo ou direito do nó encontrado.
+     * - Se a árvore estiver vazia, o novo nó vira a raiz.
+     * 
+     * Complexidade:
+     * - O(h), onde h é a altura da árvore. No pior caso (árvore desbalanceada), O(n). No melhor caso (balanceada), O(log n).
+     * 
+     * Exemplo:
+     * Se a árvore tem raiz 10 e você insere 5, ele será filho esquerdo. Se insere 15, será filho direito.
+     */
+    inserir(valor) {
+        let pai = null; // Referência para o nó pai
+        let atual = this.raiz; // Começa pela raiz
+        /*
+         * Este laço while percorre a árvore a partir da raiz, procurando o local correto para inserir o novo valor.
+         * A cada iteração:
+         * - Se o valor a ser inserido for menor que o valor do nó atual, vai para o filho à esquerda.
+         * - Se for maior ou igual, vai para o filho à direita.
+         * - O nó pai sempre guarda o último nó visitado.
+         * O laço termina quando 'atual' se torna null, ou seja, quando chega em um local onde não existe mais filho na direção desejada.
+         * Nesse ponto, 'pai' será o nó onde o novo valor deve ser inserido como filho esquerdo ou direito.
+         */
+        while (atual) {
+            pai = atual;
+            if (valor < atual.valor) {
+                atual = atual.esquerda; // Vai para a esquerda se valor for menor
+            } else {
+                atual = atual.direita; // Vai para a direita se valor for maior ou igual
+            }
+        }
+        // Se árvore está vazia, insere na raiz
+        if (pai === null) {
+            this.raiz = new No(valor);
+        // Insere como filho esquerdo ou direito
+        } else if (valor < pai.valor) {
+            pai.esquerda = new No(valor);
+        } else {
+            pai.direita = new No(valor);
+        }
+    }
+
+    // Busca um valor na árvore de busca
+    // Retorna uma nova árvore com o nó encontrado como raiz
+    buscar(valor) {
+        return this._buscar(valor, this.raiz);
+    }
+
+    // Função auxiliar para busca
+    _buscar(valor, no) {
+        if (no === null) return null; // Nó não encontrado
+        if (no.valor === valor) return new ArvoreBinariaBusca(no); // Encontrou o nó
+        if (valor < no.valor) return this._buscar(valor, no.esquerda); // Busca à esquerda
+        return this._buscar(valor, no.direita); // Busca à direita
+    }
+
+    // Retorna o menor valor da árvore
+    // Percorre sempre para a esquerda até o último nó
+    minimo(no = null) {
+        if (no === null) no = this.raiz;
+        while (no.esquerda) no = no.esquerda;
+        return no.valor;
+    }
+
+    // Retorna o maior valor da árvore
+    // Percorre sempre para a direita até o último nó
+    maximo(no = null) {
+        if (no === null) no = this.raiz;
+        while (no.direita) no = no.direita;
+        return no.valor;
+    }
+
+    // Remove um valor da árvore de busca
+    // Ajusta os ponteiros para manter a propriedade da BST
+    remover(valor, no = null) {
+        if (no === null) no = this.raiz;
+        if (no === null) return null; // Nó não encontrado
+        if (valor < no.valor) {
+            no.esquerda = this.remover(valor, no.esquerda); // Remove à esquerda
+        } else if (valor > no.valor) {
+            no.direita = this.remover(valor, no.direita); // Remove à direita
+        } else {
+            // Caso 1: Nó sem filho esquerdo
+            if (no.esquerda === null) return no.direita;
+            // Caso 2: Nó sem filho direito
+            if (no.direita === null) return no.esquerda;
+            // Caso 3: Nó com dois filhos
+            let substituto = this.minimo(no.direita); // Encontra o menor valor da subárvore direita
+            no.valor = substituto; // Substitui valor do nó
+            no.direita = this.remover(substituto, no.direita); // Remove nó substituto
+        }
+        return no;
+    }
+}
+
+// Exemplo de uso:
+if (require.main === module) {
+    // Cria uma árvore binária simples
+    const arvore = new ArvoreBinaria(7); // Raiz com valor 7
+    arvore.raiz.esquerda = new No(18); // Filho esquerdo da raiz com valor 18
+    arvore.raiz.direita = new No(14); // Filho direito da raiz com valor 14
+
+    // Exibe os nós da árvore
+    console.log(arvore.raiz); // Exibe nó raiz
+    console.log(arvore.raiz.direita); // Exibe filho direito
+    console.log(arvore.raiz.esquerda); // Exibe filho esquerdo
+}
