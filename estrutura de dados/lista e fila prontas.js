@@ -4,9 +4,12 @@ let lista = ["banana", "maçã", "laranja", "uva"];
 // Métodos úteis:
 lista.push("abacaxi");          // adiciona no final
 lista.unshift("melancia");      // adiciona no início
-lista.pop();                    // remove do final
-lista.shift();                  // remove do início
-lista.splice(2, 1);             // remove 1 item no índice 2
+
+let index_splice = 2
+lista.splice(index_splice, 1);             // remove 1 item no índice 2
+lista.shift();                             // remove do início
+lista.pop();                               // remove do final
+
 let copia = lista.slice();      // copia a lista
 let temMaca = lista.includes("maçã"); // busca por valor
 let index = lista.indexOf("uva");     // pega posição
@@ -27,5 +30,5 @@ let atendido = fila.shift(); // sai da fila (primeiro a entrar, primeiro a sair)
 // 🥞 PILHA (Stack - LIFO)
 let pilha = [];
 pilha.push("livro A");   // entra na pilha
-pilha.push("livro B");
+pilha.push("livro B");   // entra na pilha
 let topo = pilha.pop();  // sai da pilha (último a entrar, primeiro a sair)
