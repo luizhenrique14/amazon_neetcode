@@ -7,21 +7,21 @@ tabelaHash.set("idade", 30);
 tabelaHash.set("ativo", true);
 
 // 🔍 Buscar valor
-console.log(tabelaHash.get("chave1")); // "valor1"
+tabelaHash.get("chave1");
 
 // ❓ Verificar se uma chave existe
-console.log(tabelaHash.has("idade")); // true
+tabelaHash.has("idade");
 
 // ❌ Remover uma chave
 tabelaHash.delete("chave2");
 
-// 🧹 Limpar tudo
+// 🧹 Limpar tudo (descomente se quiser limpar tudo)
 // tabelaHash.clear();
 
 // 📏 Tamanho da tabela
-console.log(tabelaHash.size); // 3 (se não limpou)
+tabelaHash.size;
 
 // 🔁 Iterar sobre a tabela
 for (let [chave, valor] of tabelaHash) {
-  console.log(`🔑 ${chave}:`, valor);
+  // fazer algo com chave e valor
 }

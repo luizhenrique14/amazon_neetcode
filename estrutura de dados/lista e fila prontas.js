@@ -1,62 +1,31 @@
-// ✅ LISTA GENÉRICA
-console.log("📚 Lista Genérica");
+// ✅ LISTA GENÉRICA (Array)
+let lista = ["banana", "maçã", "laranja", "uva"];
 
-let lista = [];
-
-// Adicionar elementos
-lista.push("banana");           // fim
-lista.unshift("maçã");          // início
-lista.push("laranja");
-
-console.log("Lista atual:", lista);
-
-// Remover elementos
-lista.pop();                    // remove do fim
+// Métodos úteis:
+lista.push("abacaxi");          // adiciona no final
+lista.unshift("melancia");      // adiciona no início
+lista.pop();                    // remove do final
 lista.shift();                  // remove do início
+lista.splice(2, 1);             // remove 1 item no índice 2
+let copia = lista.slice();      // copia a lista
+let temMaca = lista.includes("maçã"); // busca por valor
+let index = lista.indexOf("uva");     // pega posição
+let invertida = lista.reverse();      // inverte a ordem
+let ordenada = lista.sort();          // ordena A-Z
 
-console.log("Após remoções:", lista);
+// Ordenar números
+let numeros = [10, 5, 8, 1];
+numeros.sort((a, b) => a - b); // crescente
+numeros.sort((a, b) => b - a); // decrescente
 
-// Buscar índice
-let indice = lista.indexOf("banana");
-console.log("Índice de 'banana':", indice);
-
-// Remover por índice
-if (indice !== -1) lista.splice(indice, 1);
-
-console.log("Final da lista:", lista);
-console.log("\n");
-
-// 🪜 FILA (QUEUE)
-console.log("🪜 Fila (FIFO)");
-
+// 🪜 FILA (Queue - FIFO)
 let fila = [];
-
-// Enfileirar
-fila.push("cliente 1");
+fila.push("cliente 1");  // entra na fila
 fila.push("cliente 2");
-fila.push("cliente 3");
+let atendido = fila.shift(); // sai da fila (primeiro a entrar, primeiro a sair)
 
-console.log("Fila atual:", fila);
-
-// Desenfileirar
-let atendido = fila.shift();
-console.log("Atendido:", atendido);
-console.log("Fila após atendimento:", fila);
-console.log("\n");
-
-// 🥞 PILHA (STACK)
-console.log("🥞 Pilha (LIFO)");
-
+// 🥞 PILHA (Stack - LIFO)
 let pilha = [];
-
-// Empilhar
-pilha.push("livro A");
+pilha.push("livro A");   // entra na pilha
 pilha.push("livro B");
-pilha.push("livro C");
-
-console.log("Pilha atual:", pilha);
-
-// Desempilhar
-let removido = pilha.pop();
-console.log("Topo removido:", removido);
-console.log("Pilha após pop:", pilha);
+let topo = pilha.pop();  // sai da pilha (último a entrar, primeiro a sair)
