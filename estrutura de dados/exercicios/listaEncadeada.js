@@ -4,9 +4,9 @@
 
 // int get(int i)retornará o valor do ithnó (indexado em 0). Se o índice estiver fora dos limites, retornará -1.
 
-// void insertHead(int val)irá inserir um nó com valno topo da lista.
+// void insertinicio(int val)irá inserir um nó com valno topo da lista.
 
-// void insertTail(int val)irá inserir um nó valno final da lista.
+// void insertfim(int val)irá inserir um nó valno final da lista.
 
 // bool remove(int i)removerá o ithnó (indexado em 0). Se o índice estiver fora dos limites, retornará false; caso contrário, retornará true.
 
@@ -16,8 +16,8 @@
  * Nó de Lista Encadeada Simples
  */
 class Node {
-    constructor(val, nextNode = null) {
-        this.val = val; // Valor armazenado no nó
+    constructor(valor, nextNode = null) {
+        this.valor = valor; // Valor armazenado no nó
         this.next = nextNode; // Referência para o próximo nó
     }
 }
@@ -27,14 +27,14 @@ class Node {
  */
 class LinkedList {
     constructor() {
-        this.head = new Node(-1);
-        this.tail = this.head;
+        this.inicio = new Node(-1);
+        this.fim = this.inicio;
         this.tamanho = 0;
     }
 
     // retornará o valor do index (indexado em 0). Se o índice estiver fora dos limites, retornará -1.
     get(index) {
-        let curr = this.head.next;
+        let curr = this.inicio.next;
         let count = 0;
         while (curr) {
             if (count === index) {
@@ -48,26 +48,37 @@ class LinkedList {
 
     /**
      * Insere um novo nó no início da lista
-     * @param {number} val - Valor a ser inserido
+     * @param {number} valor - Valor a ser inserido
      */
-    insertHead(val) {
-        const newNode = new Node(val);
-        newNode.next = this.head.next;
-        this.head.next = newNode;
-        if (!newNode.next) {
-            // Se a lista estava vazia antes da inserção
-            this.tail = newNode;
+    insertInicio(valor) {
+        const newNode = new Node(valor);
+        if (!this.inicio) {
+            // Lista está vazia
+            this.inicio = newNode;
+            this.fim = newNode;
+        } else {
+            newNode.next = this.inicio;
+            this.inicio = newNode;
         }
+
         this.tamanho++;
     }
 
     /**
      * Insere um novo nó no final da lista
-     * @param {number} val - Valor a ser inserido
+     * @param {number} valor - Valor a ser inserido
      */
-    insertTail(val) {
-        this.tail.next = new Node(val);
-        this.tail = this.tail.next;
+    insertFim(valor) {
+        const novoNo = new Node(valor);
+        if (!this.inicio) {
+            // Lista está vazia
+            this.inicio = novoNo;
+            this.fim = novoNo;
+        } else {
+            this.fim.next = novoNo;
+            this.fim = novoNo;
+        }
+
         this.tamanho++;
     }
 
@@ -77,13 +88,20 @@ class LinkedList {
      * @returns {boolean} Verdadeiro se a remoção foi bem-sucedida, falso caso contrário
      */
     remove(indice) {
-        let atual = this.inicio.proximo;
+        if (indice < 0 || indice >= this.tamanho) {
+            return false;
+        }
+        let atual = this.inicio;
+        let anterior = null;
         let count = 0;
-        let anterior;
 
         while (atual) {
             if (count === indice) {
-                anterior.proximo = atual.proximo;
+                if (anterior) {
+                    anterior.proximo = atual.proximo;
+                } else {
+                    this.inicio = atual.proximo;
+                }
                 this.tamanho--;
                 return true;
             }
@@ -91,6 +109,7 @@ class LinkedList {
             atual = atual.proximo;
             count++;
         }
+
         return false;
     }
 
@@ -99,7 +118,7 @@ class LinkedList {
      * @returns {number[]} Um array contendo todos os valores da lista
      */
     getValues() {
-        let curr = this.head.next;
+        let curr = this.inicio.next;
         const res = [];
         while (curr) {
             res.push(curr.val);

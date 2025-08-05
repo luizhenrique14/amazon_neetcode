@@ -11,9 +11,9 @@
 
 class Node {
     constructor(val, proximo = null, anterior = null) {
+        this.anterior = anterior; // Referência para o anterior nó
         this.val = val; // Valor armazenado no nó
         this.proximo = proximo; // Referência para o próximo nó
-        this.anterior = anterior; // Referência para o anterior nó
     }
 }
 
